@@ -38,7 +38,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+//	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
 /* layout(s) */
@@ -73,6 +73,10 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *upvol[] = { "/usr/bin/pactl", "set-sink-volume", "1", "+5%", NULL };
 static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "1", "-5%", NULL };
 static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute", "1", "toggle", NULL };
+
+static const char *pauseMpd[] = { "/usr/bin/mpc", "toggle", NULL, NULL, NULL };
+static const char *nextMpd[] = { "/usr/bin/mpc", "next", NULL, NULL, NULL };
+static const char *prevMpd[] = { "/usr/bin/mpc", "prev", NULL, NULL, NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -116,6 +120,9 @@ static Key keys[] = {
 	{ 0,							XF86XK_AudioRaiseVolume,	spawn, {.v = upvol} },
 	{ 0,							XF86XK_AudioLowerVolume,	spawn, {.v = downvol} },
 	{ 0,							XF86XK_AudioMute,	spawn, {.v = mutevol} },
+	{ 0,							XF86XK_AudioPlay,	spawn, {.v = pauseMpd} },
+	{ 0,							XF86XK_AudioNext,	spawn, {.v = nextMpd} },
+	{ 0,							XF86XK_AudioPrev,	spawn, {.v = prevMpd} },
 };
 
 /* button definitions */
