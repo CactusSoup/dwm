@@ -29,16 +29,21 @@ static const unsigned int alphas[][3]      = {
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tagsalt[] = { "a", "b", "c", "d", "e", "f", "g", "8", "9" };
+static const char *tagsalt[] = { "a", "b", "c", "d", "e", "f", "g", "x", "z" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-//	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class                        instance                        title       tags mask     isfloating isTerminal noswallow   monitor */
+	{ "Steam",                      NULL,                           NULL,       1 << 7,       0,         0,         0,            0 },
+	{ "Firefox",                    NULL,                           NULL,       1 << 8,       0,         0,         -1,           0 },
+	{ "Google-chrome",              "google-chrome",                NULL,       1 << 0,       0,         0,         0,            1 },
+	{ "Genymotion",                 "genymotion",                   NULL,       1 << 2,       0,         0,         0,            1 },
+	{ "Genymotion Player",          "player",                       NULL,       1 << 2,       0,         0,         0,            1 },
+	{ "Microsoft Teams - Preview",  "microsoft teams - preview",    NULL,       1 << 8,       0,         0,         0,            1 },
+	{ "st",                         NULL,                           NULL,       0,            0,         1,         0,            -1 },
 };
 
 /* layout(s) */
@@ -49,9 +54,7 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	{ "",      tile },    /* first entry is default */
 };
 
 /* key definitions */
@@ -70,9 +73,9 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
-static const char *upvol[] = { "/usr/bin/pactl", "set-sink-volume", "1", "+5%", NULL };
-static const char *downvol[] = { "/usr/bin/pactl", "set-sink-volume", "1", "-5%", NULL };
-static const char *mutevol[] = { "/usr/bin/pactl", "set-sink-mute", "1", "toggle", NULL };
+static const char *upvol[] = { "/usr/bin/amixer", "-q", "sset", "Master", "5%+", NULL };
+static const char *downvol[] = { "/usr/bin/amixer", "-q", "sset", "Master", "5%-", NULL };
+static const char *mutevol[] = { "/usr/bin/amixer", "-q", "sset", "Master", "toggle", NULL };
 
 static const char *pauseMpd[] = { "/usr/bin/mpc", "toggle", NULL, NULL, NULL };
 static const char *nextMpd[] = { "/usr/bin/mpc", "next", NULL, NULL, NULL };
@@ -92,9 +95,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
