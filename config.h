@@ -74,12 +74,15 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "st", NULL };
 
 static const char *upvol[] = { "/usr/bin/amixer", "-q", "sset", "Master", "5%+", NULL };
+static const char *upvol20[] = { "/usr/bin/amixer", "-q", "sset", "Master", "20%+", NULL };
 static const char *downvol[] = { "/usr/bin/amixer", "-q", "sset", "Master", "5%-", NULL };
+static const char *downvol20[] = { "/usr/bin/amixer", "-q", "sset", "Master", "20%-", NULL };
 static const char *mutevol[] = { "/usr/bin/amixer", "-q", "sset", "Master", "toggle", NULL };
 
-static const char *pauseMpd[] = { "/usr/bin/mpc", "toggle", NULL, NULL, NULL };
-static const char *nextMpd[] = { "/usr/bin/mpc", "next", NULL, NULL, NULL };
-static const char *prevMpd[] = { "/usr/bin/mpc", "prev", NULL, NULL, NULL };
+static const char *toggleMpd[] = { "mpd-toggle", NULL };
+static const char *nextMpd[] = { "/usr/bin/mpc", "next", NULL };
+static const char *nextAlbumMpd[] = { "mpd-next-album", NULL };
+static const char *prevMpd[] = { "/usr/bin/mpc", "prev", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -118,10 +121,13 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ 0,							XF86XK_AudioRaiseVolume,	spawn, {.v = upvol} },
+	{ ShiftMask,					XF86XK_AudioRaiseVolume,	spawn, {.v = upvol20} },
 	{ 0,							XF86XK_AudioLowerVolume,	spawn, {.v = downvol} },
+	{ ShiftMask,					XF86XK_AudioLowerVolume,	spawn, {.v = downvol20} },
 	{ 0,							XF86XK_AudioMute,	spawn, {.v = mutevol} },
-	{ 0,							XF86XK_AudioPlay,	spawn, {.v = pauseMpd} },
+	{ 0,							XF86XK_AudioPlay,	spawn, {.v = toggleMpd} },
 	{ 0,							XF86XK_AudioNext,	spawn, {.v = nextMpd} },
+	{ ShiftMask,					XF86XK_AudioNext,	spawn, {.v = nextAlbumMpd} },
 	{ 0,							XF86XK_AudioPrev,	spawn, {.v = prevMpd} },
 };
 
